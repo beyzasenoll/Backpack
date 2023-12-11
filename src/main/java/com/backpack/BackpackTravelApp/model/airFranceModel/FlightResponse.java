@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class FlightDetails {
+public class FlightResponse {
     private String origin;
     private List<DestinationCity> destinationCities;
 }

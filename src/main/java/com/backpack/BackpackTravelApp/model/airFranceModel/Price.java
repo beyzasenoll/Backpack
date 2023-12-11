@@ -11,7 +11,7 @@ public
 class Price {
     private double displayPrice;
     private double totalPrice;
-    private List<Surcharges> surcharges;
+    private List<Surcharge> surcharges;
     private int fare;
     private int taxes;
     private String currency;

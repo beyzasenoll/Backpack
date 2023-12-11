@@ -1,5 +1,7 @@
 package com.backpack.BackpackTravelApp.controller;
 
+//import com.backpack.BackpackTravelApp.model.airFranceModel.FlightDetails;
+
 import com.backpack.BackpackTravelApp.service.AirFranceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,17 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-public class ApiController {
+public class AirFranceController {
 
     private final AirFranceService airFranceService;
 
     @Autowired
-    public ApiController(AirFranceService airFranceService) {
+    public AirFranceController(AirFranceService airFranceService) {
         this.airFranceService = airFranceService;
     }
 
-    @GetMapping("/getFlightStatus")
-    public void getFlightStatus() {
-        airFranceService.printTotalPrice();
+    @PostMapping("/getFlightStatus")
+    public void fetchTotalPrice() {
+        airFranceService.fetchTotalPrice();
     }
 }
+
+
