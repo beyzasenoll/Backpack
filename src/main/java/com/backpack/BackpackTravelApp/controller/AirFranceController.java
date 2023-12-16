@@ -2,12 +2,11 @@ package com.backpack.BackpackTravelApp.controller;
 
 //import com.backpack.BackpackTravelApp.model.airFranceModel.FlightDetails;
 
+import com.backpack.BackpackTravelApp.dto.airfranceapi.getFlightStatusRequest.GetFlightStatusRequest;
 import com.backpack.BackpackTravelApp.service.AirFranceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")

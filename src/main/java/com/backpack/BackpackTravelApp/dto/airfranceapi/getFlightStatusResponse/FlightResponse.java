@@ -1,4 +1,4 @@
-package com.backpack.BackpackTravelApp.model.airFranceModel;
+package com.backpack.BackpackTravelApp.dto.airfranceapi.getFlightStatusResponse;
 
 import java.util.List;
 

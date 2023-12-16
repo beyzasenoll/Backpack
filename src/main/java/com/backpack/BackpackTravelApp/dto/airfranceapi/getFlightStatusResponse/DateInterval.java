@@ -1,4 +1,4 @@
-package com.backpack.BackpackTravelApp.model.airFranceModel;
+package com.backpack.BackpackTravelApp.dto.airfranceapi.getFlightStatusResponse;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public
 class DateInterval {
-    private Object toDate;
-    //private String fromDate;
+    private String toDate; //object
+    private String fromDate;
 }

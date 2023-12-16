@@ -1,4 +1,4 @@
-package com.backpack.BackpackTravelApp.controller;
+package com.backpack.BackpackTravelApp.dto.airfranceapi.getFlightStatusRequest;
 
 import lombok.Data;
 

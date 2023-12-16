@@ -1,7 +1,7 @@
 package com.backpack.BackpackTravelApp.service;
 
-import com.backpack.BackpackTravelApp.controller.GetFlightStatusRequest;
-import com.backpack.BackpackTravelApp.model.airFranceModel.FlightResponse;
+import com.backpack.BackpackTravelApp.dto.airfranceapi.getFlightStatusRequest.GetFlightStatusRequest;
+import com.backpack.BackpackTravelApp.dto.airfranceapi.getFlightStatusResponse.FlightResponse;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +18,11 @@ public class AirFranceService {
     @Value("${airfranceklm.api.url}")
     private String apiUrl;
 
+    @Value("${airfrance.api.host}")
+    private String hostName;
+
+    @Value("${airfrance.api.content.type}")
+    private String contentType;
     @Autowired
     private RestTemplate restTemplate;
 
@@ -28,13 +33,11 @@ public class AirFranceService {
 
         logger.info(getFlightStatus.getBookingFlow());
 
-        //GetFlightStatusRequest getFlightStatusRequest = new GetFlightStatusRequest();
-        //getFlightStatusRequest.setBookingFlow("dsdas");
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Content-Type", "application/json");
+        httpHeaders.set("Content-Type", contentType);
         httpHeaders.set("API-Key", apiKey);
-        httpHeaders.set("AFKL-TRAVEL-Host", "KL");
+        httpHeaders.set("AFKL-TRAVEL-Host", hostName);
 
         HttpEntity<GetFlightStatusRequest> requestEntity =
                 new HttpEntity<>(getFlightStatus, httpHeaders);
@@ -42,8 +45,6 @@ public class AirFranceService {
         logger.info("Sending request to Air France API: {}", apiUrl);
         logger.info("Request body: {}", httpHeaders);
 
-
-        //restTemplate.postForEntity()
 
         try {
             ResponseEntity<FlightResponse> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, FlightResponse.class);
@@ -53,8 +54,9 @@ public class AirFranceService {
 
             if (responseEntity.getStatusCode().is2xxSuccessful()) {
                 FlightResponse airFranceApiResponse = responseEntity.getBody();
-
-                return 1L;
+                double totalPrice = airFranceApiResponse.getDestinationCities().get(0).getFlightProducts().get(0).getPrice().getTotalPrice();
+                logger.info("Total price retrieved: {}", totalPrice);
+                return totalPrice;
             } else {
                 logger.error("Error fetching total price: {}", responseEntity.getStatusCodeValue());
                 return 0;
