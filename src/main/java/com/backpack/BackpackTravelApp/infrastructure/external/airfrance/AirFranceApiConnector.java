@@ -5,33 +5,47 @@ import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.request.
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.response.AirFranceFlightResponse;
 import com.backpack.BackpackTravelApp.mapper.airfrance.AirFranceRequestMapper;
 import com.backpack.BackpackTravelApp.service.AirFranceService;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Component
 public class AirFranceApiConnector {
     //TODO add test
     Logger logger = LoggerFactory.getLogger(AirFranceService.class);
-    @Value("${airfrance.api.key}")
+    @Value("${air.france.api.key}")
     private String apiKey;
-    @Value("${airfranceklm.api.url}")
+    @Value("${air.france.klm.api.url}")
     private String apiUrl;
-    @Value("${airfrance.api.host}")
+
+    @Value("${air.france.api.host}")
     private String hostName;
-    @Value("${airfrance.api.content.type}")
+    @Value("${air.france.api.content.type}")
     private String contentType;
-    public RestTemplate restTemplate;
 
+    @Autowired
+    RestTemplate restTemplate;
 
+    @PostConstruct
+    private void initializeRestTemplate() {
+        if (apiKey == null || apiUrl == null || hostName == null || contentType == null) {
+            throw new IllegalStateException("One or more required properties are null. Cannot initialize RestTemplate.");
+        }
+
+        restTemplate = new RestTemplate();
+    }
     public AirFranceFlightResponse getAirFranceFlightDetails(FlightDetailRequestDto flightDetailRequestDto) {
 
         AirFranceRequestMapper airFranceRequestMapper= new AirFranceRequestMapper();

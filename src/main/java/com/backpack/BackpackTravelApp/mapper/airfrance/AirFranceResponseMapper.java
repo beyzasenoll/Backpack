@@ -2,7 +2,9 @@ package com.backpack.BackpackTravelApp.mapper.airfrance;
 
 import com.backpack.BackpackTravelApp.dto.FlightDetailResponseDto;
 import com.backpack.BackpackTravelApp.model.AirFranceFlightDetail;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AirFranceResponseMapper {
     public static AirFranceFlightDetail mapAirFranceFlightResponse(FlightDetailResponseDto flightDetailResponseDto) {
         AirFranceFlightDetail airFranceFlightDetailResponse = new AirFranceFlightDetail();

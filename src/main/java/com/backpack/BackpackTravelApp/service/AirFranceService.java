@@ -12,6 +12,7 @@ import com.backpack.BackpackTravelApp.model.AirFranceFlightDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -20,20 +21,24 @@ public class AirFranceService {
 
     //TODO add test
     Logger logger = LoggerFactory.getLogger(AirFranceService.class);
+    private final AirFranceApiConnector airFranceApiConnector;
+    private final AirFranceResponseMapper airFranceResponseMapper;
+
+    @Autowired
+    public AirFranceService(AirFranceApiConnector airFranceApiConnector, AirFranceResponseMapper airFranceResponseMapper) {
+        this.airFranceApiConnector = airFranceApiConnector;
+        this.airFranceResponseMapper = airFranceResponseMapper;
+    }
 
     public FlightDetailResponseDto findMinimumPriceFromAirFranceApi(FlightDetailRequestDto getFlightDetailRequestDto, FlightDetailResponseDto flightDetailResponseDto) {
         logger.info("Fetching total price from Air France API...");
 
-                AirFranceApiConnector airFranceApiConnector =new AirFranceApiConnector();
-                AirFranceFlightResponse airFranceApiResponse = airFranceApiConnector.getAirFranceFlightDetails(getFlightDetailRequestDto);
-                AirFranceResponseMapper airFranceResponseMapper= new AirFranceResponseMapper();
+        AirFranceFlightResponse airFranceApiResponse = airFranceApiConnector.getAirFranceFlightDetails(getFlightDetailRequestDto);
+
+        logger.info("Air France API response received successfully.");
 
 
-                //burada air france rest connector çağıracaksın.
-                //Air france rest client'ı çağırmak için öncelikle airFrance request'ini maplemen gerekiyor.
-                //Air france rest client output'u GetAirFranceFlightResponse bu olacak.
-                // sen ekstra rest'e dair bir obje burada barındırmayacaksın.
-                String originCode = airFranceApiResponse.getOrigin();
+        String originCode = airFranceApiResponse.getOrigin();
                 double minTotalPrice = Double.MAX_VALUE;
                 String minTotalPriceCity = null;
                 String departureDate = null;
@@ -53,6 +58,8 @@ public class AirFranceService {
                 }
                 AirFranceFlightDetail airFranceFlightDetail= new AirFranceFlightDetail(originCode, minTotalPriceCity, departureDate, returnDate, minTotalPrice);
                 flightDetailResponseDto = airFranceResponseMapper.mapFlightDetailResponseDto(airFranceFlightDetail);
-                return flightDetailResponseDto;
+                 logger.info("Minimum price details calculated successfully.");
+
+        return flightDetailResponseDto;
             }
         }
