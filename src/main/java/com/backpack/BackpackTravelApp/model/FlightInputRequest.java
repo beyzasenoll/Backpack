@@ -1,13 +1,8 @@
 package com.backpack.BackpackTravelApp.model;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Date;
 
-@Setter
-public class FlightInput{
+public class FlightInputRequest {
     public Date departureDate;
     public Date arrivalDate;
     public String departureCity;
@@ -15,6 +10,4 @@ public class FlightInput{
     public String cities_to_visit_2;
     public String cities_to_visit_3;
     public double totalPrice;
-
-
 }
