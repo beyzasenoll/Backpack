@@ -19,9 +19,8 @@ public class FindCheapestWayController {
     public void getFlights (@RequestBody FlightRequestDto flightRequestDto){
 
     }
-
     @PostMapping("/total-price")
-    public ResponseEntity<FlightResponseDto> fetchTotalPrice(@RequestBody FlightRequestDto getFlightRequestDto) { //getFlightResponseDto
+    public ResponseEntity<FlightResponseDto> fetchTotalPrice(@RequestBody FlightRequestDto getFlightRequestDto) {
         try {
             FlightResponseDto flightResponseDto = airPlaneService.findMinimumPrice(getFlightRequestDto, new FlightResponseDto());
 
