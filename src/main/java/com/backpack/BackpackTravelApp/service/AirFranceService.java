@@ -1,69 +1,65 @@
 package com.backpack.BackpackTravelApp.service;
 
-import com.backpack.BackpackTravelApp.dto.airfranceapi.getFlightStatusRequest.GetFlightStatusRequest;
-import com.backpack.BackpackTravelApp.dto.airfranceapi.getFlightStatusResponse.FlightResponse;
+import com.backpack.BackpackTravelApp.dto.FlightDetailRequestDto;
+import com.backpack.BackpackTravelApp.dto.FlightDetailResponseDto;
+import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.AirFranceApiConnector;
+import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.response.fragment.airfrance.DestinationCity;
+import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.response.fragment.airfrance.FlightProduct;
+import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.response.AirFranceFlightResponse;
+import com.backpack.BackpackTravelApp.mapper.airfrance.AirFranceResponseMapper;
+import com.backpack.BackpackTravelApp.model.AirFranceFlightDetail;
+
 import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 
 @Service
 public class AirFranceService {
 
-    @Value("${airfrance.api.key}")
-    private String apiKey;
-    @Value("${airfranceklm.api.url}")
-    private String apiUrl;
+    //TODO add test
+    Logger logger = LoggerFactory.getLogger(AirFranceService.class);
+    private final AirFranceApiConnector airFranceApiConnector;
+    private final AirFranceResponseMapper airFranceResponseMapper;
 
-    @Value("${airfrance.api.host}")
-    private String hostName;
-
-    @Value("${airfrance.api.content.type}")
-    private String contentType;
     @Autowired
-    private RestTemplate restTemplate;
+    public AirFranceService(AirFranceApiConnector airFranceApiConnector, AirFranceResponseMapper airFranceResponseMapper) {
+        this.airFranceApiConnector = airFranceApiConnector;
+        this.airFranceResponseMapper = airFranceResponseMapper;
+    }
 
-   Logger logger = LoggerFactory.getLogger(AirFranceService.class);
-
-    public double fetchTotalPrice(GetFlightStatusRequest getFlightStatus) {
+    public FlightDetailResponseDto findMinimumPriceFromAirFranceApi(FlightDetailRequestDto getFlightDetailRequestDto, FlightDetailResponseDto flightDetailResponseDto) {
         logger.info("Fetching total price from Air France API...");
 
-        logger.info(getFlightStatus.getBookingFlow());
+        AirFranceFlightResponse airFranceApiResponse = airFranceApiConnector.getAirFranceFlightDetails(getFlightDetailRequestDto);
+
+        logger.info("Air France API response received successfully.");
 
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Content-Type", contentType);
-        httpHeaders.set("API-Key", apiKey);
-        httpHeaders.set("AFKL-TRAVEL-Host", hostName);
+        String originCode = airFranceApiResponse.getOrigin();
+                double minTotalPrice = Double.MAX_VALUE;
+                String minTotalPriceCity = null;
+                String departureDate = null;
+                String returnDate = null;
 
-        HttpEntity<GetFlightStatusRequest> requestEntity =
-                new HttpEntity<>(getFlightStatus, httpHeaders);
+                //TODO: for yerine stream kullan.
+                for (DestinationCity destinationCity : airFranceApiResponse.getDestinationCities()) {
+                    for (FlightProduct flightProduct : destinationCity.getFlightProducts()) {
+                        double currentTotalPrice = flightProduct.getPrice().getTotalPrice();
+                        if (currentTotalPrice < minTotalPrice) {
+                            minTotalPrice = currentTotalPrice;
+                            minTotalPriceCity = destinationCity.getName();
+                            departureDate = flightProduct.getDepartureDate();
+                            returnDate = flightProduct.getReturnDate();
+                        }
+                    }
+                }
+                AirFranceFlightDetail airFranceFlightDetail= new AirFranceFlightDetail(originCode, minTotalPriceCity, departureDate, returnDate, minTotalPrice);
+                flightDetailResponseDto = airFranceResponseMapper.mapFlightDetailResponseDto(airFranceFlightDetail);
+                 logger.info("Minimum price details calculated successfully.");
 
-        logger.info("Sending request to Air France API: {}", apiUrl);
-        logger.info("Request body: {}", httpHeaders);
-
-
-        try {
-            ResponseEntity<FlightResponse> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, FlightResponse.class);
-
-            logger.info("Received response from Air France API: {}", responseEntity);
-            logger.info("Response status code: {}", responseEntity.getStatusCode());
-
-            if (responseEntity.getStatusCode().is2xxSuccessful()) {
-                FlightResponse airFranceApiResponse = responseEntity.getBody();
-                double totalPrice = airFranceApiResponse.getDestinationCities().get(0).getFlightProducts().get(0).getPrice().getTotalPrice();
-                logger.info("Total price retrieved: {}", totalPrice);
-                return totalPrice;
-            } else {
-                logger.error("Error fetching total price: {}", responseEntity.getStatusCodeValue());
-                return 0;
+        return flightDetailResponseDto;
             }
-        } catch (Exception e) {
-            logger.error("Unexpected error occurred", e);
-            return 0;
         }
-    }
-}
