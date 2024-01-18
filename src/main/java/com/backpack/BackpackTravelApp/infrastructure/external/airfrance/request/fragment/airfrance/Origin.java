@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Origin {
     String type;
-    String code;
+    String code="CITY";
 
         public Origin(String type, String code) {
             this.type = type;

@@ -1,34 +1,33 @@
 package com.backpack.BackpackTravelApp.mapper.airfrance;
 
-import com.backpack.BackpackTravelApp.dto.FlightDetailRequestDto;
+import com.backpack.BackpackTravelApp.dto.FlightRequestDto;
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.request.AirFranceFlightRequest;
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.request.fragment.airfrance.Origin;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AirFranceRequestMapper {
-    public static AirFranceFlightRequest mapToGetAirFranceFlightRequest(FlightDetailRequestDto flightDetailRequestDto) {
+    public static AirFranceFlightRequest mapToGetAirFranceFlightRequest(FlightRequestDto flightRequestDto) {
         AirFranceFlightRequest airFranceFlightRequest = new AirFranceFlightRequest();
 
-        // Origin'i başlat
         airFranceFlightRequest.setOrigin(new Origin());
-        airFranceFlightRequest.getOrigin().setType(flightDetailRequestDto.departureCityType);
-        airFranceFlightRequest.getOrigin().setCode(flightDetailRequestDto.departureCity);
+        airFranceFlightRequest.getOrigin().setType("CITY");
+        airFranceFlightRequest.getOrigin().setCode(flightRequestDto.departureCity);
 
-        airFranceFlightRequest.setDestinationCities(flightDetailRequestDto.getDestinationCities());
-        airFranceFlightRequest.setFromDate(flightDetailRequestDto.fromDate);
-        airFranceFlightRequest.setUntilDate(flightDetailRequestDto.untilDate);
+        airFranceFlightRequest.setDestinationCities(flightRequestDto.getCitiesToVisit());
+        airFranceFlightRequest.setFromDate(flightRequestDto.arrivalDate);
+        airFranceFlightRequest.setUntilDate(flightRequestDto.departureDate);
 
         return airFranceFlightRequest;
     }
 
 
-    public static FlightDetailRequestDto getFlightDetailRequestDto(AirFranceFlightRequest airFranceFlightRequest){
-        FlightDetailRequestDto flightDetailRequestDto =new FlightDetailRequestDto();
-        flightDetailRequestDto.setDepartureCity(airFranceFlightRequest.getOrigin().getCode());
-        flightDetailRequestDto.setDestinationCities(airFranceFlightRequest.getDestinationCities());
-        flightDetailRequestDto.setFromDate(airFranceFlightRequest.getFromDate());
-        flightDetailRequestDto.setUntilDate(airFranceFlightRequest.getUntilDate());
-        return flightDetailRequestDto;
+    public static FlightRequestDto getFlightDetailRequestDto(AirFranceFlightRequest airFranceFlightRequest){
+        FlightRequestDto flightRequestDto =new FlightRequestDto();
+        flightRequestDto.setDepartureCity(airFranceFlightRequest.getOrigin().getCode());
+        flightRequestDto.setCitiesToVisit(airFranceFlightRequest.getDestinationCities());
+        flightRequestDto.setArrivalDate(airFranceFlightRequest.getFromDate());
+        flightRequestDto.setDepartureDate(airFranceFlightRequest.getUntilDate());
+        return flightRequestDto;
     }
 }

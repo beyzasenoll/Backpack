@@ -1,7 +1,7 @@
 package com.backpack.BackpackTravelApp.controller;
+
 import com.backpack.BackpackTravelApp.dto.FlightRequestDto;
 import com.backpack.BackpackTravelApp.dto.FlightResponseDto;
-
 import com.backpack.BackpackTravelApp.handler.FindCheapestWayHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class FindCheapestWayController {
     @PostMapping("/total-price")
     public ResponseEntity<FlightResponseDto> fetchTotalPrice(@RequestBody FlightRequestDto getFlightRequestDto) {
         try {
-            FlightResponseDto flightResponseDto = findCheapestWayHandler.findMinimumPrice(getFlightRequestDto, new FlightResponseDto());
+            FlightResponseDto flightResponseDto = findCheapestWayHandler.findMinimumPrice(getFlightRequestDto);
 
             return new ResponseEntity<>(flightResponseDto, HttpStatus.OK);
             } catch (Exception e) {

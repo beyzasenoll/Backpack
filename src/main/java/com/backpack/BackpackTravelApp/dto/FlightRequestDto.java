@@ -1,14 +1,14 @@
 package com.backpack.BackpackTravelApp.dto;
-import lombok.Setter;
 
-@Setter
-public class FlightRequestDto { //FlightInput --> FlightInputRequestDto
+import lombok.Data;
+import java.util.List;
+
+@Data
+public class FlightRequestDto {
     public String departureDate;
     public String arrivalDate;
     public String departureCity;
-    public String cities_to_visit_1;
-    public String cities_to_visit_2;
-    public String cities_to_visit_3;
+    public List<String> citiesToVisit;
 
 
 }

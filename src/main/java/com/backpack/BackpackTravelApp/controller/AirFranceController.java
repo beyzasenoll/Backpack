@@ -1,7 +1,7 @@
 package com.backpack.BackpackTravelApp.controller;
 
-import com.backpack.BackpackTravelApp.dto.FlightDetailRequestDto;
-import com.backpack.BackpackTravelApp.dto.FlightDetailResponseDto;
+import com.backpack.BackpackTravelApp.dto.FlightRequestDto;
+import com.backpack.BackpackTravelApp.dto.FlightResponseDto;
 import com.backpack.BackpackTravelApp.service.AirFranceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,11 +22,11 @@ public class AirFranceController {
         this.airFranceService = airFranceApiService;
     }
 
-    @PostMapping("/total-price")
-    public ResponseEntity<FlightDetailResponseDto> fetchTotalPrice(@RequestBody FlightDetailRequestDto getFlightDetailRequestDto) {
+    @PostMapping("/total-price1")
+    public ResponseEntity<FlightResponseDto> fetchTotalPrice(@RequestBody FlightRequestDto getFlightRequestDto) {
         try {
-            FlightDetailResponseDto flightDetailResponseDto = airFranceService.findMinimumPriceFromAirFranceApi(getFlightDetailRequestDto, new FlightDetailResponseDto());
-            return new ResponseEntity<>(flightDetailResponseDto, HttpStatus.OK);
+            FlightResponseDto flightResponseDto = airFranceService.findMinimumPriceFromAirFranceApi(getFlightRequestDto, new FlightResponseDto());
+            return new ResponseEntity<>(flightResponseDto, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

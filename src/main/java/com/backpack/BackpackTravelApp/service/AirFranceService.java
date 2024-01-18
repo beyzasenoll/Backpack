@@ -1,7 +1,7 @@
 package com.backpack.BackpackTravelApp.service;
 
-import com.backpack.BackpackTravelApp.dto.FlightDetailRequestDto;
-import com.backpack.BackpackTravelApp.dto.FlightDetailResponseDto;
+import com.backpack.BackpackTravelApp.dto.FlightRequestDto;
+import com.backpack.BackpackTravelApp.dto.FlightResponseDto;
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.AirFranceApiConnector;
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.response.fragment.airfrance.DestinationCity;
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.response.fragment.airfrance.FlightProduct;
@@ -30,10 +30,10 @@ public class AirFranceService {
         this.airFranceResponseMapper = airFranceResponseMapper;
     }
 
-    public FlightDetailResponseDto findMinimumPriceFromAirFranceApi(FlightDetailRequestDto getFlightDetailRequestDto, FlightDetailResponseDto flightDetailResponseDto) {
+    public FlightResponseDto findMinimumPriceFromAirFranceApi(FlightRequestDto getFlightRequestDto, FlightResponseDto flightResponseDto) {
         logger.info("Fetching total price from Air France API...");
 
-        AirFranceFlightResponse airFranceApiResponse = airFranceApiConnector.getAirFranceFlightDetails(getFlightDetailRequestDto);
+        AirFranceFlightResponse airFranceApiResponse = airFranceApiConnector.getAirFranceFlightDetails(getFlightRequestDto);
 
         logger.info("Air France API response received successfully.");
 
@@ -57,9 +57,9 @@ public class AirFranceService {
                     }
                 }
                 AirFranceFlightDetail airFranceFlightDetail= new AirFranceFlightDetail(originCode, minTotalPriceCity, departureDate, returnDate, minTotalPrice);
-                flightDetailResponseDto = airFranceResponseMapper.mapFlightDetailResponseDto(airFranceFlightDetail);
+                flightResponseDto = airFranceResponseMapper.mapFlightDetailResponseDto(airFranceFlightDetail);
                  logger.info("Minimum price details calculated successfully.");
 
-        return flightDetailResponseDto;
+        return flightResponseDto;
             }
         }

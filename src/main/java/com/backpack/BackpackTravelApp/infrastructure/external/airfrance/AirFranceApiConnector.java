@@ -1,6 +1,6 @@
 package com.backpack.BackpackTravelApp.infrastructure.external.airfrance;
 
-import com.backpack.BackpackTravelApp.dto.FlightDetailRequestDto;
+import com.backpack.BackpackTravelApp.dto.FlightRequestDto;
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.request.AirFranceFlightRequest;
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.response.AirFranceFlightResponse;
 import com.backpack.BackpackTravelApp.mapper.airfrance.AirFranceRequestMapper;
@@ -46,10 +46,10 @@ public class AirFranceApiConnector {
 
         restTemplate = new RestTemplate();
     }
-    public AirFranceFlightResponse getAirFranceFlightDetails(FlightDetailRequestDto flightDetailRequestDto) {
+    public AirFranceFlightResponse getAirFranceFlightDetails(FlightRequestDto flightRequestDto) {
 
         AirFranceRequestMapper airFranceRequestMapper= new AirFranceRequestMapper();
-        AirFranceFlightRequest airFranceFlightRequest = airFranceRequestMapper.mapToGetAirFranceFlightRequest(flightDetailRequestDto);
+        AirFranceFlightRequest airFranceFlightRequest = airFranceRequestMapper.mapToGetAirFranceFlightRequest(flightRequestDto);
 
 
         HttpHeaders httpHeaders = prepareHttpHeaders();
