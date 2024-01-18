@@ -1,9 +1,7 @@
-package com.backpack.BackpackTravelApp.controller;
+package com.backpack.BackpackTravelApp.handler;
 
 import com.backpack.BackpackTravelApp.dto.FlightRequestDto;
 import com.backpack.BackpackTravelApp.dto.FlightResponseDto;
-import com.backpack.BackpackTravelApp.controller.FindCheapestWayHandler;
-import com.backpack.BackpackTravelApp.controller.FindCheapestWayController;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;

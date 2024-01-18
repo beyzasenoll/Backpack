@@ -1,5 +1,4 @@
 package com.backpack.BackpackTravelApp.dto;
-import com.backpack.BackpackTravelApp.controller.FindCheapestWayHandler;
 import lombok.Setter;
 
 @Setter
