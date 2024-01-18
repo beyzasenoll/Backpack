@@ -9,10 +9,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class AirFranceFlightRequest {
-    private String bookingFlow = null;
+    //private String bookingFlow = null;
     private Origin origin;
     private List<String> destinationCities;
-    private String type=null;
+    //private String type=null;
     private String fromDate;
     private String untilDate;
 
