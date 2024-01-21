@@ -2,7 +2,7 @@ package com.backpack.BackpackTravelApp.handler;
 
 import com.backpack.BackpackTravelApp.dto.FlightRequestDto;
 import com.backpack.BackpackTravelApp.dto.FlightResponseDto;
-import com.backpack.BackpackTravelApp.service.AirFranceService;
+import com.backpack.BackpackTravelApp.service.airfrance.AirFranceClient_1.AirFranceService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
