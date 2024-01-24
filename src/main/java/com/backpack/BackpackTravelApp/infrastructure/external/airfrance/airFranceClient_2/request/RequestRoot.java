@@ -5,7 +5,7 @@ import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.airFranc
 
 import java.util.ArrayList;
 
-public class Root{
+public class RequestRoot {
     public String type;
     public String bookingFlow;
     public ArrayList<String> commercialCabins;

@@ -6,7 +6,7 @@ import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.airFranc
 
 import java.util.ArrayList;
 
-public class Root{
+public class ResponseRoot {
     public ArrayList<Recommendation> recommendations;
     public ArrayList<Connection> connections;
     public Disclaimer disclaimer;

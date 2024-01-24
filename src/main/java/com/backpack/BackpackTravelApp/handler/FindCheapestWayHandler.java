@@ -2,7 +2,7 @@ package com.backpack.BackpackTravelApp.handler;
 
 import com.backpack.BackpackTravelApp.dto.FlightRequestDto;
 import com.backpack.BackpackTravelApp.dto.FlightResponseDto;
-import com.backpack.BackpackTravelApp.service.airfrance.AirFranceClient_1.AirFranceService;
+import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.airFranceClient_2.AirFranceApiConnector;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ public class FindCheapestWayHandler {
 
     private String airPlaneService;
     @Autowired
-    private AirFranceService airFranceService;
+    private AirFranceApiConnector airFranceApiConnector;
 
     public List<String> findCheapestWay(FlightResponseDto flightResponseDto) {
 
@@ -25,7 +25,7 @@ public class FindCheapestWayHandler {
     }
     
     public FlightResponseDto findMinimumPrice(FlightRequestDto getFlightRequestDto) {
-            FlightResponseDto flightResponseDto = airFranceService.findMinimumPriceFromAirFranceApi(getFlightRequestDto, new FlightResponseDto());
+            FlightResponseDto flightResponseDto = airFranceApiConnector.findMinimumPriceFromAirFranceApi(getFlightRequestDto, new FlightResponseDto());
             return new ResponseEntity<>(flightResponseDto, HttpStatus.OK).getBody();
     }
 }
