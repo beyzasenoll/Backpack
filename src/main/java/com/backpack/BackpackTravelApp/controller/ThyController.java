@@ -1,7 +1,6 @@
 package com.backpack.BackpackTravelApp.controller;
 
 import com.backpack.BackpackTravelApp.dto.thy.Example;
-import com.backpack.BackpackTravelApp.service.ThyAPIservice.ThyApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
