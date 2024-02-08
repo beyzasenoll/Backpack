@@ -1,0 +1,21 @@
+package com.backpack.BackpackTravelApp.infrastructure.external.airfrance.request;
+
+import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.request.fragment.Passenger;
+import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.request.fragment.RequestedConnection;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class RequestRoot {
+
+    public String type;
+    public String bookingFlow;
+    public ArrayList<String> commercialCabins;
+    public ArrayList<Passenger> passengers;
+    public ArrayList<RequestedConnection> requestedConnections;
+}

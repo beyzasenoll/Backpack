@@ -20,7 +20,7 @@ public class FindCheapestWayController {
     public void getFlights (@RequestBody FlightRequestDto flightRequestDto){
 
     }
-    @PostMapping("/total-price")
+   /* @PostMapping("/total-price")
     public ResponseEntity<FlightResponseDto> fetchTotalPrice(@RequestBody FlightRequestDto getFlightRequestDto) {
         try {
             FlightResponseDto flightResponseDto = findCheapestWayHandler.findMinimumPrice(getFlightRequestDto);
@@ -29,6 +29,6 @@ public class FindCheapestWayController {
             } catch (Exception e) {
                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        }
+        }*/
 }
 
