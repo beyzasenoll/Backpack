@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class MyWayAirController {
     private MyWayApiService myWayApiService;
@@ -17,7 +19,7 @@ public class MyWayAirController {
     }
 
     @PostMapping("/getMaxPrice")
-    public double getMaxPrice(@RequestBody Request request) {
+    public List<Double> getMaxPrice(@RequestBody Request request) {
         return myWayApiService.getMaxPrice(request);
     }
 }

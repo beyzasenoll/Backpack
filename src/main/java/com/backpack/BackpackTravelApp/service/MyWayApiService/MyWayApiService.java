@@ -6,12 +6,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class MyWayApiService {
-    public double getMaxPrice(Request request) {
+    public List<Double> getMaxPrice(Request request) {
+        List<Double> matchingPrices = new ArrayList<>();
         try {
             // JSON dosyasını oku
             ObjectMapper mapper = new ObjectMapper();
@@ -20,21 +22,24 @@ public class MyWayApiService {
 
             // Request verilerine uygun objeyi bul
             for (Map<String, Object> data : information) {
-                if (    data.get("departureDate").equals(request.getDepartureDate()) &&
+                if (data.get("departureDate").equals(request.getDepartureDate()) &&
                         data.get("departureCity").equals(request.getDepartureCity())
-                        ) {
+                ) {
+                    matchingPrices.add(Double.parseDouble(data.get("max_price").toString()));
 
-                    // Eşleşen objeyi bulduk, max_price değerini döndür
-                    return Double.parseDouble(data.get("max_price").toString());
+                }
+
+
+                if (matchingPrices.isEmpty()) {
+                    System.out.println("Bu kriterlere uygun uçuş bulunamadı.");
                 }
             }
-
-            // Eşleşen obje bulunamadıysa 0.0 döndür
-            return 0.0;   // Error mesajı veya veri döndürecek şekilde yeniden düzenlersin. "Bu kriterlere uygun uçuş bulunamadı" tarzı bir mesaj dönsün
-
-        } catch (IOException e) {
+            return matchingPrices;
+        }catch (IOException e) {
             e.printStackTrace();
-            return 00000.00000; // Hata durumunda 00000.00000 döndür
+            // Hata durumunda uygun bir hata mesajı döndür
+            System.out.println("Hata oluştu: " + e.getMessage());
+            return null;
         }
     }
 }
