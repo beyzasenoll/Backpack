@@ -15,7 +15,7 @@ public class ResponseOfTheAirport {
     public Boolean legalAgeSituation;
     public int flightNumberOfPassengers;
     public int numberOfPet;
-    public Boolean SituationHavingBaby; //0 or 1
+    public Boolean SituationHavingBaby;
     public int numberOfBaggage;
     public int weightOfBaggage;
 

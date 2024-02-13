@@ -1,12 +1,9 @@
 package service;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.coyote.Request;
+import request.RequestFromTheAirport;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import request.RequestFromTheAirport;
-import response.ResponseOfTheAirport;
-
+import java.util.ArrayList;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +11,8 @@ import java.util.Map;
 @Service
 public class TheAirportService {
 
-    public double getMaxPrice(RequestFromTheAirport requestFromTheAirport) {
+    public List<Double>  getMaxPrice(RequestFromTheAirport requestFromTheAirport) {
+        List<Double> matchingPrices = new ArrayList<>();
         try {
             ObjectMapper mapper = new ObjectMapper();
             ClassPathResource resource = new ClassPathResource("flightsInfo.json");
@@ -24,13 +22,17 @@ public class TheAirportService {
                 if (    data.get("domainDate").equals(requestFromTheAirport.getDomainDate()) &&
                         data.get("domainCity").equals(requestFromTheAirport.getDomainCity())
                 ) {
-
-                    return Double.parseDouble(data.get("max_price").toString());
+                    matchingPrices.add(Double.parseDouble(data.get("maxPrice").toString()));
+                }
+                if (matchingPrices.isEmpty()) {
+                    System.out.println("not found.");
                 }
             }
-            return 0.0;
+            return matchingPrices;
+
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Error reading flights data from JSON file");
+            System.out.println("error: " + e.getMessage());
+            return null;
         }
     }}
