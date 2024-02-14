@@ -27,6 +27,8 @@ public class FlightRequestHandler {
 
         }
 
+        
+
         for (int i = 0; i < numOfCities - 1; i++) {
             for (int j = i + 1; j < numOfCities; j++) {
                 requestedConnections.add(airFranceRequestMapper.mapAirFranceFlightRequest(numberOfPassengers,dateInterval,citiesToVisit[i], citiesToVisit[j], flightRequest.minDaysOfStay, flightRequest.maxDaysOfStay));

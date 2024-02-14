@@ -17,7 +17,16 @@ import java.util.stream.Collectors;
 public class AirFranceService {
     public List<AirfranceResponseModelDetail> matchFlightProducts(FlightRequestDto flightRequestDto) {
         AirFranceApiConnector airFranceApiConnector=new AirFranceApiConnector();
-        List<ResponseRoot> responseRootList =airFranceApiConnector.getAirFranceFlightsInformation(flightRequestDto);
+        ResponseRoot responseRootList =airFranceApiConnector.getAirFranceFlightsInformation(flightRequestDto);
+
+        recommendationData =  responseRootList.recommendations.stream().forEach(
+                x -> x.flightProducts.stream().forEach(y -> )
+        );
+
+        connectionData = responseRootList.connections.stream().forEach(
+                x -> x.stream().filter(y -> y.id == recommendationData.id)
+        );
+
         Set<Integer> connectionIDs = responseRootList.stream()
                 .flatMap(root -> root.recommendations.stream())
                 .flatMap(recommendation -> recommendation.flightProducts.stream())

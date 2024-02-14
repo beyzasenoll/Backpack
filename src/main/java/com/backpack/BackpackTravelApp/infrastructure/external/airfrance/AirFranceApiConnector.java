@@ -1,10 +1,9 @@
 package com.backpack.BackpackTravelApp.infrastructure.external.airfrance;
 
-import com.backpack.BackpackTravelApp.handler.airfrance.FlightRequestHandler;
 import com.backpack.BackpackTravelApp.dto.FlightRequestDto;
+import com.backpack.BackpackTravelApp.handler.airfrance.FlightRequestHandler;
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.request.RequestRoot;
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.response.ResponseRoot;
-import com.backpack.BackpackTravelApp.model.airfrance.AirFrance.MultipleAirfranceResponse;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -21,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 @NoArgsConstructor
@@ -74,11 +72,89 @@ public class AirFranceApiConnector {
     }
 
 
+    public List<ResponseRoot> getAirFranceFlightsInformation(FlightRequestDto flightRequest) {
+        FlightRequestHandler flightRequestHandler = new FlightRequestHandler();
+        List<RequestRoot> requestRoots = flightRequestHandler.generateRequestedConnections(flightRequest);
 
+        HttpHeaders httpHeaders = prepareHttpHeaders();
+        logger.info("Prepared headers.");
+        List<ResponseRoot> allResponses = new ArrayList<>();
+
+        for (RequestRoot requestRoot : requestRoots) {
+            HttpEntity<RequestRoot> requestEntity = new HttpEntity<>(requestRoot, httpHeaders);
+            logger.info("created request entity.");
+            try {
+                logger.info("Creating response entity.");
+                ResponseEntity<ResponseRoot> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, ResponseRoot.class);
+                logger.info("Created response entity.");
+
+                if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                    logger.info("Air France flight details fetched successfully.");
+                    allResponses.add(responseEntity.getBody());
+                } else {
+                    handleHttpError(responseEntity);
+                }
+            } catch (Exception e) {
+                handleUnexpectedError(e);
+            }
+
+            // Introduce a 1-second delay
+            try {
+                Thread.sleep(1000); // Sleep for 1 second (1000 milliseconds)
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        if (!allResponses.isEmpty()) {
+            return allResponses;
+        }
+
+        return null;
+    }
 
     public List<ResponseRoot> getAirFranceFlightsInformation(FlightRequestDto flightRequest) {
         FlightRequestHandler flightRequestHandler = new FlightRequestHandler();
         List<RequestRoot> requestRoots = flightRequestHandler.generateRequestedConnections(flightRequest);
+
+        HttpHeaders httpHeaders = prepareHttpHeaders();
+        logger.info("Prepared headers.");
+        List<ResponseRoot> allResponses = new ArrayList<>();
+
+        for (RequestRoot requestRoot : requestRoots) {
+            HttpEntity<RequestRoot> requestEntity = new HttpEntity<>(requestRoot, httpHeaders);
+            logger.info("created request entity.");
+            try {
+                logger.info("Creating response entity.");
+                ResponseEntity<ResponseRoot> responseEntity = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, ResponseRoot.class);
+                logger.info("Created response entity.");
+
+                if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                    logger.info("Air France flight details fetched successfully.");
+                    allResponses.add(responseEntity.getBody());
+                } else {
+                    handleHttpError(responseEntity);
+                }
+            } catch (Exception e) {
+                handleUnexpectedError(e);
+            }
+
+            // Introduce a 1-second delay
+            try {
+                Thread.sleep(1000); // Sleep for 1 second (1000 milliseconds)
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        if (!allResponses.isEmpty()) {
+            return allResponses;
+        }
+
+        return null;
+    }
+
+    public ResponseRoot getAirFranceFlightsInformationV2(FlightRequestDto flightRequest) {
+        FlightRequestHandler flightRequestHandler = new FlightRequestHandler();
+        RequestRoot requestRoots = flightRequestHandler.generateRequestedConnections(flightRequest);
 
         HttpHeaders httpHeaders = prepareHttpHeaders();
         logger.info("Prepared headers.");

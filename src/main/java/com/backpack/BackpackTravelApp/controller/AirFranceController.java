@@ -4,9 +4,7 @@ package com.backpack.BackpackTravelApp.controller;
 import com.backpack.BackpackTravelApp.dto.FlightRequestDto;
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.AirFranceApiConnector;
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.request.RequestRoot;
-import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.request.fragment.RequestedConnection;
 import com.backpack.BackpackTravelApp.infrastructure.external.airfrance.response.ResponseRoot;
-import com.backpack.BackpackTravelApp.model.airfrance.AirFrance.MultipleAirfranceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,10 +37,10 @@ public class AirFranceController {
     }
 
         @PostMapping("/createConnections")
-        public ResponseEntity<MultipleAirfranceResponse> createConnections(@RequestBody FlightRequestDto flightRequest) {
+        public ResponseEntity<List<ResponseRoot>> createConnections(@RequestBody FlightRequestDto flightRequest) {
             try {
-                MultipleAirfranceResponse multipleAirfranceResponse = airFranceApiConnector.getAirFranceFlightsInformation(flightRequest);
-                return new ResponseEntity<>(multipleAirfranceResponse, HttpStatus.OK);
+                List<ResponseRoot> responseRootList = airFranceApiConnector.getAirFranceFlightsInformation(flightRequest);
+                return new ResponseEntity<>(responseRootList, HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
